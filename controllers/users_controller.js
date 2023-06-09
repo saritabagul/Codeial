@@ -70,7 +70,13 @@ module.exports.createSession = function(req, res){
 }
 
 //destroy the session on signout
-module.exports.destroySession = function(req,res){
-    req.logout();
-    return redirect('/');
+module.exports.destroySession = function(req,res,next){
+    req.logout(function(err) {
+        if (err) { return next(err); }
+    res.redirect('/');
+    });
+     
+        
+    // req.logout();
+    // return redirect('/');
 }
