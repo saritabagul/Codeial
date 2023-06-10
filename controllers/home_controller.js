@@ -1,5 +1,6 @@
 const Post = require('../models/post');
 
+
 // module.exports.actionName = function(req, res){}
 
 /* previous code
@@ -26,6 +27,7 @@ module.exports.home = async function(req,res){
    }
    */
 
+   /*   populate user for post
    try{
       const posts = await Post.find({}).populate('user').exec();
       return res.render('home',{
@@ -35,5 +37,27 @@ module.exports.home = async function(req,res){
    }catch(err){
       console.log('Error to find the posts',err);
    }
+   */
+
+   // populate the user of each post and also populate the common of each post with populating user of each comment
+   try{
+      const posts = await Post.find({})
+                              .populate('user')
+                              .populate({
+                                 path:'comments',
+                                 populate:{
+                                    path:'user'
+                                 }
+                              })
+                              .exec();
+      return res.render('home',{
+         title:"Codeial | Home",
+         posts:posts
+      });
+   }catch(err){
+      console.log('Error to find the posts',err);
+   }
+
+
 }
 
