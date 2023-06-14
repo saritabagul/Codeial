@@ -87,3 +87,20 @@ module.exports.destroySession = function(req,res,next){
     // req.logout();
     // return redirect('/');
 }
+
+
+//Update user profile
+module.exports.update = async function(req,res){
+    if(req.user.id = req.params.id){
+        try{
+            const user = await User.findByIdAndUpdate(req.params.id,req.body);
+            return res.redirect('back');
+        }catch(err){
+            console.log('Error to update the record ',err);
+            return res.redirect('back');
+        }
+
+    }else{
+        return res.status(401).send('Unauthorized');
+    }
+}
