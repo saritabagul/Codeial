@@ -26,3 +26,22 @@ module.exports.create = async function(req,res){
         console.log("error in creating a comment");return;
     }
 }
+
+module.exports.destroy = async function(req,res){
+    try{
+        const comment = await Comment.findById(req.params.id);
+        if(comment.user == req.user.id){
+            let postId = comment.post;
+            // comment.remove();
+            comment.deleteOne({comment:req.params.id});
+
+            const post = await Post.findByIdAndUpdate(postId, { $pull: {comments: req.params.id}});
+            return res.redirect('back');
+        
+        }else{
+            return res.redirect('back');
+        }
+    }catch(err){
+        console.log('Record not found to delete',err);
+    }
+}
