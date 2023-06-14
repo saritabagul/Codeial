@@ -1,12 +1,19 @@
 const User = require('../models/user'); // importing users schema
 
 
-module.exports.profile = function (req, res) {
+module.exports.profile = async function (req, res) {
     //    return res.end('<h1>Users Profile</h1>');
 
-    return res.render('profile', {
-        title: "Users Profile",
-    });
+     try{
+        const user = await User.findById(req.params.id);
+        return res.render('profile', {
+            title: "Users Profile",
+            profile_user:user
+        });
+     }catch(err){
+
+     }   
+   
 }
 
 //render the sign up page
