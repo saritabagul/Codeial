@@ -15,7 +15,7 @@ module.exports.home = function(req, res){
 }
 */
 
-module.exports.home = async function(req,res){
+module.exports.home = async function (req, res) {
    /* here we get only user._id we need to diplay author name also..so need to take whole user object
    try{
       const posts = await Post.find({});
@@ -41,24 +41,24 @@ module.exports.home = async function(req,res){
    */
 
    // populate the user of each post and also populate the common of each post with populating user of each comment
-   try{
+   try {
       const posts = await Post.find({})
-                              .populate('user')
-                              .populate({
-                                 path:'comments',
-                                 populate:{
-                                    path:'user'
-                                 }
-                              })
-                              .exec();
-      const users = await User.find({});                        
-      return res.render('home',{
-         title:"Codeial | Home",
-         posts:posts,
-         all_users:users
+         .populate('user')
+         .populate({
+            path: 'comments',
+            populate: {
+               path: 'user'
+            }
+         })
+         .exec();
+      const users = await User.find({});
+      return res.render('home', {
+         title: "Codeial | Home",
+         posts: posts,
+         all_users: users
       });
-   }catch(err){
-      console.log('Error to find the posts',err);
+   } catch (err) {
+      console.log('Error to find the posts', err);
    }
 
 
