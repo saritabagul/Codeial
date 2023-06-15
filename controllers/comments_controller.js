@@ -15,15 +15,20 @@ module.exports.create = async function(req,res){
                 // console.log(comment);
                 post.comments.push(comment);
                 post.save();
-                
+                req.flash('success', 'Comment published!');
                 return res.redirect('/');
             }catch(err){
-                if(err){console.log("Error to create a comment",err);}
+                if(err){
+                    req.flash('error',err);
+                    //console.log("Error to create a comment",err);
+                }
             }
         }
        
     }catch(err){
-        console.log("error in creating a comment");return;
+        // console.log("error in creating a comment");
+        req.flash('error', err);
+        return;
     }
 }
 
@@ -36,12 +41,16 @@ module.exports.destroy = async function(req,res){
             comment.deleteOne({comment:req.params.id});
 
             const post = await Post.findByIdAndUpdate(postId, { $pull: {comments: req.params.id}});
+            req.flash('success', "Comment deleted!");
             return res.redirect('back');
         
         }else{
+            req.flash('error', err);
             return res.redirect('back');
         }
     }catch(err){
-        console.log('Record not found to delete',err);
+        req.flash('error', err);
+        return;
+        //console.log('Record not found to delete',err);
     }
 }
