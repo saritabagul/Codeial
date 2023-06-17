@@ -43,6 +43,7 @@ module.exports.home = async function (req, res) {
    // populate the user of each post and also populate the common of each post with populating user of each comment
    try {
       const posts = await Post.find({})
+         .sort('-createdAt')
          .populate('user')
          .populate({
             path: 'comments',
