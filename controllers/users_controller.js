@@ -1,5 +1,6 @@
 const User = require('../models/user'); // importing users schema
-
+const path = require('path');
+const fs = require('fs');
 
 module.exports.profile = async function (req, res) {
     //    return res.end('<h1>Users Profile</h1>');
@@ -95,8 +96,41 @@ module.exports.destroySession = function(req,res,next){
 module.exports.update = async function(req,res){
     if(req.user.id = req.params.id){
         try{
-            const user = await User.findByIdAndUpdate(req.params.id,req.body);
-            return res.redirect('back');
+            // const user = await User.findByIdAndUpdate(req.params.id,req.body);
+            // return res.redirect('back');
+
+
+            const user = await User.findById(req.params.id);
+            User.uploadedAvatar(req,res,function(err){
+                if(err){cosnole.log("****Multer error",err);}
+
+                // console.log(req.file);
+                user.name=req.body.name;
+                user.email = req.body.email;
+
+                if(req.file){
+
+                    
+                    const filePath = path.join(__dirname,'..',user.avatar);
+                    if(fs.existsSync(filePath)){
+                        console.log('File exists. Deleting now ...');
+                        fs.unlinkSync(filePath);
+                    }else{
+                        console.log('File not found, so not deleting.');
+                    }
+                   
+                    // if(user.avatar){
+
+                    //     fs.unlinkSync(path.join(__dirname,'..',user.avatar));
+                    // }
+                    // this is saving the path of the uploaded file into the avatar field in th user 
+                    user.avatar = User.avatarPath+'/'+req.file.filename;
+                }
+
+                user.save();
+                return res.redirect('back');
+            })
+
         }catch(err){
             console.log('Error to update the record ',err);
             return res.redirect('back');
