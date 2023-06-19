@@ -108,9 +108,7 @@ module.exports.update = async function(req,res){
                 user.name=req.body.name;
                 user.email = req.body.email;
 
-                if(req.file){
-
-                    
+                if(req.file){                    
                     const filePath = path.join(__dirname,'..',user.avatar);
                     if(fs.existsSync(filePath)){
                         console.log('File exists. Deleting now ...');

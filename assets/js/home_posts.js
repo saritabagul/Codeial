@@ -14,7 +14,8 @@
                    console.log(data);
                    let newPost = newPostDom(data.data.post);
                    $('#posts-list-container>ul').prepend(newPost);
-                   deletePost($(` .delete-post-button`,newPost));
+                   deletePost($(` .delete-post-button`,newPost));                   
+                    setFlash("success","Post Created Successfully!");
                 }, error: function(error){
                     console.log(error.responseText);
                 }
@@ -60,7 +61,7 @@
 
  
  //method to delete a post from dom
- let deletePost = function (deleteLink){
+ let deletePost = function (deleteLink){    
     $(deleteLink).click(function(e){
         e.preventDefault();
 
@@ -69,6 +70,7 @@
             url:$(deleteLink).prop('href'),
             success:function(data){
                 $(`#post-${data.data.post_id}`).remove();
+                setFlash("success","Post Deleted!");
             },
             error:function(error){
                 console.log(error.responseText);
@@ -78,5 +80,31 @@
  }
 
 
+    // let getAllPostToDelete = $('.delete-post-button');   
+    // for(let i=0;i<getAllPostToDelete.length;i++){       
+    //         deletePost(getAllPostToDelete[i]);
+    // }
+
+     // loop over all the existing posts on the page (when the window loads for the first time) and call the delete post method on delete link of each, also add AJAX (using the class we've created) to the delete button of each 
+     let deletePostsForAll = function()
+     {
+         $('#posts-list-container>ul>li').each(function()
+         {
+             let self = $(this);
+             let deleteButton = $(' .delete-post-button', self);
+             deletePost(deleteButton);
+ 
+             // get the post's id by splitting the id attribute
+            //  let postId = self.prop('id').split("-")[1];
+            //  new PostComments(postId);
+         });
+     }
+ 
+ 
+ 
     createPost();
+    deletePostsForAll();
+
+
+    
 }
