@@ -14,8 +14,12 @@
                    console.log(data);
                    let newPost = newPostDom(data.data.post);
                    $('#posts-list-container>ul').prepend(newPost);
-                   deletePost($(` .delete-post-button`,newPost));                   
-                    setFlash("success","Post Created Successfully!");
+                   deletePost($(` .delete-post-button`,newPost)); 
+                   
+                    // call the create comment class
+                    new PostComments(data.data.post._id);
+
+                   setFlash("success","Post Created Successfully!");
                 }, error: function(error){
                     console.log(error.responseText);
                 }
@@ -94,9 +98,9 @@
              let deleteButton = $(' .delete-post-button', self);
              deletePost(deleteButton);
  
-             // get the post's id by splitting the id attribute
-            //  let postId = self.prop('id').split("-")[1];
-            //  new PostComments(postId);
+            //  get the post's id by splitting the id attribute
+             let postId = self.prop('id').split("-")[1];
+             new PostComments(postId);
          });
      }
  
