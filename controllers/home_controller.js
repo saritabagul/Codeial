@@ -50,7 +50,7 @@ module.exports.home = async function (req, res) {
             populate: {
                path: 'user'
             },
-            options: { sort: { createdAt: -1 }}
+            options: { sort: { createdAt: -1 }} // sort the comments
          })
          .exec();
       const users = await User.find({});
