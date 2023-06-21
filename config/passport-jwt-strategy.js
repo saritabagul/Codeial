@@ -10,13 +10,17 @@ let opts = {
 };
 
 passport.use(new JwtStrategy(opts,async function(jwtPayload,done){
-    const user = await User.findById(jwtPayload._id);
+    try{
+        const user = await User.findById(jwtPayload._id);
 
-    if(err){console.log('Error in finding user from jwt'); return;}
+        if(user){
+            return done(null,user);
+        }else{
+            return done(null,false);
+        }
+    }catch(err){
+        console.log('Error in finding user from jwt'); return;
+    }  
 
-    if(user){
-        return done(null,user);
-    }else{
-        return done(null,false);
-    }
+   
 }));
