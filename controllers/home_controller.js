@@ -52,7 +52,7 @@ module.exports.home = async function (req, res) {
             },
             options: { sort: { createdAt: -1 }} // sort the comments
          })
-         .exec();
+         
       const users = await User.find({});
       return res.render('home', {
          title: "Codeial | Home",
