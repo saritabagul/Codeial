@@ -1,6 +1,8 @@
 const Comment = require('../models/comments');
 const Post = require('../models/post');
 const commentMailer = require('../mailers/comment_mailer');
+const queue = require('../config/kue');
+const commentEmailWorker = require('../workers/comment_email_worker');
 
 module.exports.create = async function(req,res){
     try{
@@ -17,7 +19,15 @@ module.exports.create = async function(req,res){
                 post.comments.push(comment);
                 post.save();
                 comment = await comment.populate('user', 'name email'); 
-                commentMailer.newComment(comment);
+                // commentMailer.newComment(comment); // replace this with delayed jobs with the help of kue
+                let job = queue.create('emails',comment).save(function(err){
+                    if(err){
+                        console.log('error in creating to the queue');
+                        return;
+                    }
+
+                    console.log(job.id);
+                });
                 if (req.xhr){
                     // Similar for comments to fetch the user's id!
                  
