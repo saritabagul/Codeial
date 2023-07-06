@@ -42,17 +42,43 @@ module.exports.home = async function (req, res) {
 
    // populate the user of each post and also populate the common of each post with populating user of each comment
    try {
-      const posts = await Post.find({})
-         .sort('-createdAt')
-         .populate('user')
-         .populate({
-            path: 'comments',
-            populate: {
-               path: 'user'
-            },
-            options: { sort: { createdAt: -1 }} // sort the comments
-         })
+       // CHANGE :: populate the likes of each post and comment
+      // const posts = await Post.find({})
+      //    .sort('-createdAt')
+      //    .populate('user')
+      //    .populate({
+      //       path: 'comments',
+      //       populate: {
+      //          path: 'user'
+      //       },
+      //       populate:{
+      //          path:'likes' // populating likes for comments
+      //       },
+      //       options: { sort: { createdAt: -1 }} // sort the comments
+      //    }).populate('likes'); // populating likes for posts
          
+      let posts = await Post.find({})
+        .sort('-createdAt')
+        .populate('user')
+        .populate({
+            path: 'comments',
+            populate: [
+                {
+                    path: 'user'
+                },
+                {
+                    path: 'likes'
+                }
+            ],
+            options: {
+                sort: {
+                    createdAt: -1
+                }
+            }
+        })
+        .populate('likes');
+      
+   // console.log(posts[0].user);
       const users = await User.find({});
       return res.render('home', {
          title: "Codeial | Home",
