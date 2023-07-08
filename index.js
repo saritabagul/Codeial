@@ -1,4 +1,5 @@
 const express = require('express');
+const env = require('./config/environment');
 const cookieParser = require('cookie-parser');
 const app = express();
 const port = 8000;
@@ -31,7 +32,8 @@ app.use(expressLayout);
 app.set('layout extractStyles',true);
 app.set('layout extractScripts',true);
 
-app.use(express.static('./assets'));
+// app.use(express.static('./assets')); 
+app.use(express.static(env.asset_path));
 //use express router
 
 //make the uploads path available to the browser
@@ -47,7 +49,7 @@ app.set('views','./views');
 app.use(session({
     name:'codeail',
     // TODO change the secret before deployment in production mode
-    secret:'blahsomething',
+    secret:env.session_cookie_key,
     saveUninitialized:false,
     resave:false,
     cookie:{
