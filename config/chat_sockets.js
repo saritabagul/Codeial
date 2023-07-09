@@ -4,7 +4,7 @@ module.exports.chatSockets = function(socketServer){
             origin: '*',
         }
  });
-    console.log(io);
+  
     io.sockets.on('connection', function(socket){
         console.log('new connection received', socket.id);
 

@@ -1,4 +1,5 @@
 const express = require('express');
+const logger = require('morgan');
 const env = require('./config/environment');
 const cookieParser = require('cookie-parser');
 const app = express();
@@ -27,6 +28,7 @@ console.log('chat server is listening on port 5000');
 
 app.use(express.urlencoded());
 app.use(cookieParser());
+app.use(logger(env.morgan.mode,env.morgan.options));
 const expressLayout = require('express-ejs-layouts');
 app.use(expressLayout);
 app.set('layout extractStyles',true);
