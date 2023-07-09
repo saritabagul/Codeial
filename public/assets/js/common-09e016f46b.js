@@ -1,0 +1,1 @@
+{function setFlash(t,e){new Noty({theme:"relax",text:e,type:t,layout:"topRight",timeout:1500}).show()}}
