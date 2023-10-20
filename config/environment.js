@@ -22,12 +22,12 @@ const development={
         port: 587,
         secure: false,
         auth: {     
-          user: 'bagulsarita2016',
-          pass: 'ujqdlcqrxhpzwrxz'
+          user: 'add your username',
+          pass: 'add your password'
         }
       },
-      google_client_id:"939536668093-gbs1c0hc5ip5vm7m66t4nvgttrj45jgp.apps.googleusercontent.com",
-      google_client_secret:"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",
+      google_client_id:"add client ID",
+      google_client_secret: "add client secret",
       google_callback_url:"http://localhost:8000/users/auth/google/callback",
       jwt_secret:'codeial',
       morgan:{
